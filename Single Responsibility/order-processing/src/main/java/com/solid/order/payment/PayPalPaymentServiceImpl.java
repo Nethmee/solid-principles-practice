@@ -1,17 +1,24 @@
 package com.solid.order.payment;
 
 import com.solid.order.model.Order;
+import com.solid.order.payment.paymentDetaills.PaymentDetails;
 import com.solid.order.payment.paymentDetaills.PaypalPaymentDetails;
 
-public class PayPalPaymentServiceImpl implements PaypalPaymentService {
+public class PayPalPaymentServiceImpl implements PaymentService {
     @Override
-    public boolean processPayment(Order order, PaypalPaymentDetails paypalPaymentDetails) {
-        if (!"PAYPAL".equals(paypalPaymentDetails.getPaymentMethod())) {
+    public boolean processPayment(Order order, PaymentDetails paymentDetails) {
+        if (!"PAYPAL".equals(paymentDetails.getPaymentMethod())) {
             return false;
         }
         
         // In a real application, this would connect to PayPal's API
-        String paypalEmail = paypalPaymentDetails.getPaypalEmail();
+        // Cast to the specific subclass
+        if (!(paymentDetails instanceof PaypalPaymentDetails)) {
+            return false;
+        }
+
+        PaypalPaymentDetails paypalDetails = (PaypalPaymentDetails) paymentDetails;
+        String paypalEmail = paypalDetails.getPaypalEmail();
         
         // Simplified validation
         if (paypalEmail == null || !paypalEmail.contains("@")) {

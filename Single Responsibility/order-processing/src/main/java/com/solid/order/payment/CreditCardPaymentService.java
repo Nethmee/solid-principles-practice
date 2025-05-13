@@ -3,7 +3,7 @@ package com.solid.order.payment;
 import com.solid.order.model.Order;
 import com.solid.order.payment.paymentDetaills.PaymentDetails;
 
-public class CreditCardPaymentService implements CardPaymentService {
+public class CreditCardPaymentService implements PaymentService {
     @Override
     public boolean processPayment(Order order, PaymentDetails paymentDetails) {
         if (!"CREDIT_CARD".equals(paymentDetails.getPaymentMethod())) {

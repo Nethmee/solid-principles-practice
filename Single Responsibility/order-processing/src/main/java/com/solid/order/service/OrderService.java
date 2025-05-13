@@ -3,25 +3,21 @@ package com.solid.order.service;
 import com.solid.order.discount.DiscountService;
 import com.solid.order.model.Order;
 import com.solid.order.notification.NotificationService;
-import com.solid.order.payment.CardPaymentService;
-import com.solid.order.payment.PaypalPaymentService;
+import com.solid.order.payment.PaymentService;
 import com.solid.order.payment.paymentDetaills.PaymentDetails;
 
 
 public class OrderService {
     private final DiscountService discountService;
-    private final PaypalPaymentService paypalPaymentService;
-    private final CardPaymentService cardPaymentService;
+    private final PaymentService paymentService;
     private final NotificationService notificationService;
 
     public OrderService(
             DiscountService discountService,
-            PaypalPaymentService paypalPaymentService,
-            CardPaymentService cardPaymentService,
+        PaymentService paymentService,
             NotificationService notificationService) {
         this.discountService = discountService;
-        this.paypalPaymentService = paypalPaymentService;
-        this.cardPaymentService = cardPaymentService;
+        this.paymentService = paymentService;
         this.notificationService = notificationService;
     }
 
@@ -32,7 +28,7 @@ public class OrderService {
         }
 
         // Process the payment
-        boolean paymentSuccessful = cardPaymentService.processPayment(order, paymentDetails);
+        boolean paymentSuccessful = paymentService.processPayment(order, paymentDetails);
 
         // If payment is successful, send confirmation
         if (paymentSuccessful) {

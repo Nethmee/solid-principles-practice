@@ -27,7 +27,7 @@ public class PaymentDetails {
         details.cardNumber = cardNumber;
         details.expiryDate = expiryDate;
         details.cvv = cvv;
-        details.paymentMethod = "CREDIT-CARD";
+        details.paymentMethod = "CREDIT_CARD";
         return details;
     }
 

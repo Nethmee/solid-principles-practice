@@ -8,8 +8,9 @@ import com.solid.order.notification.EmailNotificationService;
 import com.solid.order.notification.NotificationService;
 import com.solid.order.payment.CreditCardPaymentService;
 import com.solid.order.payment.PayPalPaymentServiceImpl;
-import com.solid.order.payment.PaypalPaymentService;
+import com.solid.order.payment.PaymentService;
 import com.solid.order.payment.paymentDetaills.PaymentDetails;
+import com.solid.order.payment.paymentDetaills.PaypalPaymentDetails;
 import com.solid.order.service.OrderService;
 
 public class Main {
@@ -20,8 +21,10 @@ public class Main {
     DiscountService discountService = new CouponDiscountService();
 
     // We'll decide which payment service to use at runtime
-    CreditCardPaymentService creditCardPaymentService = new CreditCardPaymentService();
-    PaypalPaymentService paypalPaymentService = new PayPalPaymentServiceImpl();
+    PaymentService creditCardPaymentService = new CreditCardPaymentService();
+    PaymentService paypalPaymentService = new PayPalPaymentServiceImpl();
+
+
 
     NotificationService notificationService = new EmailNotificationService();
 
@@ -37,7 +40,7 @@ public class Main {
     // Process with credit card payment
     System.out.println("\n=== Processing with Credit Card ===");
     OrderService creditCardOrderService = new OrderService(
-        discountService,paypalPaymentService, creditCardPaymentService,notificationService);
+        discountService, creditCardPaymentService, notificationService);
 
     PaymentDetails creditCardDetails = PaymentDetails.createCreditCardPayment(
         "4111111111111111", "12/25", "123");
@@ -51,11 +54,12 @@ public class Main {
     // Process with PayPal payment
     System.out.println("\n=== Processing with PayPal ===");
     OrderService paypalOrderService = new OrderService(
-        discountService, paypalPaymentService,creditCardPaymentService, notificationService);
+        discountService, paypalPaymentService, notificationService);
 
-    //PaymentDetails paypalDetails = PaymentDetails.createPayPalPayment("customer@example.com");
-        
-        /*boolean ppSuccess = paypalOrderService.processOrder(order, "HALFOFF", paypalDetails);
-        System.out.println("PayPal payment successful: " + ppSuccess);*/
+    PaypalPaymentDetails paypalDetails = PaypalPaymentDetails.createPayPalPayment(
+        "customer@example.com");
+
+    boolean ppSuccess = paypalOrderService.processOrder(order, "HALFOFF", paypalDetails);
+    System.out.println("PayPal payment successful: " + ppSuccess);
   }
 } 
